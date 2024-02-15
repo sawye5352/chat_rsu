@@ -1,6 +1,6 @@
 // hooks/useFetch.js
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const useFetch = (url) => {
   const [data, setData] = useState(null);
@@ -14,7 +14,7 @@ const useFetch = (url) => {
       try {
         const response = await fetch(url);
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const result = await response.json();
         setData(result);

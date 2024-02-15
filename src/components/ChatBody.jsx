@@ -1,5 +1,5 @@
 import UserIcon from "../images/user-icon.png";
-import chatRSUIcon from "../images/chatRSU-icon.jpg";
+import chatRSUIcon from "../images/chatRSU-icon.png";
 import Markdown from "markdown-to-jsx";
 
 const ChatBody = ({ chatLog, isError }) => {

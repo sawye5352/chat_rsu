@@ -1,8 +1,17 @@
 import UserIcon from "../images/user-icon.png";
 import chatRSUIcon from "../images/chatRSU-icon.png";
 import Markdown from "markdown-to-jsx";
+import { useEffect, useRef } from "react";
 
 const ChatBody = ({ chatLog, isError }) => {
+  const buttomOfPanelRef = useRef(null);
+
+  useEffect(() => {
+    if (buttomOfPanelRef.current) {
+      buttomOfPanelRef.current.scrollIntoView();
+    }
+  }, [chatLog]);
+
   return (
     <div className="grow overflow-y-auto">
       <div className="space-y-4 px-4 py-10">
@@ -35,13 +44,14 @@ const ChatBody = ({ chatLog, isError }) => {
                     className="mr-2 h-10 w-10 rounded-full"
                     alt="chatRSUIcon"
                   />
-                  <div className="max-w-5xl rounded-lg bg-gray-800 p-2 text-white">
+                  <div className="max-w-6xl rounded-lg bg-gray-800 p-2 text-white">
                     <Markdown>{message.message}</Markdown>
                   </div>
                 </>
               )}
             </div>
           ))}
+        <div ref={buttomOfPanelRef}></div>
       </div>
     </div>
   );

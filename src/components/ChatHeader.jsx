@@ -13,7 +13,7 @@ const ChatHeader = () => {
         }}
         className="flex text-[16px] items-center justify-center gap-1 rounded-lg bg-red-800 hover:bg-red-700 px-2 py-1 "
       >
-        <img src={Bin} alt="" />
+        <img src={Bin}  alt="" />
         <p className="text-white">Clear Session</p>
       </button>
     </div>

@@ -28,6 +28,7 @@ const ChatBody = ({ chatLog, isError }) => {
             >
               {message.type === "user" ? (
                 <>
+                  <div ref={buttomOfPanelRef}></div>
                   <div className="max-w-sm rounded-lg bg-blue-500 p-2 text-white">
                     <Markdown>{message.message}</Markdown>
                   </div>
@@ -39,6 +40,7 @@ const ChatBody = ({ chatLog, isError }) => {
                 </>
               ) : (
                 <>
+                  <div ref={buttomOfPanelRef}></div>
                   <img
                     src={chatRSUIcon}
                     className="mr-2 h-10 w-10 rounded-full"

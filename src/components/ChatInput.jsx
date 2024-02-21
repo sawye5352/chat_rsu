@@ -8,7 +8,7 @@ const ChatInput = ({ setChatLog, setPrompt, isLoading }) => {
     event.preventDefault();
 
     // Check if the input is empty before updating state
-    if (input.trim() !== "") {
+    if (input.trim() !== "" && !isLoading) {
       setChatLog((prevChatLog) => [
         ...prevChatLog,
         { type: "user", message: input },

@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ChatHeader from "./components/ChatHeader";
 import ChatBody from "./components/ChatBody.jsx";
 import ChatInput from "./components/ChatInput";
 import { getChatResponse } from "./services/chat.js";
+import useLocalStorage from "./hooks/useLocalStorage.js";
 
 function App() {
-  const [chatHistory, setChatHistory] = useState([]);
+  const [chatHistory, setChatHistory] = useLocalStorage("chatHistory", []);
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,6 +23,13 @@ function App() {
   const fetchChatResponse = async () => {
     setIsLoading(true);
     try {
+      setChatHistory([
+        ...chatHistory,
+        {
+          role: "user",
+          parts: [prompt],
+        },
+      ]);
       const response = await getChatResponse(options);
       setChatHistory([
         ...chatHistory,
@@ -42,7 +50,7 @@ function App() {
 
   return (
     <div className="flex h-dvh flex-col rounded-lg">
-      <ChatHeader />
+      <ChatHeader setChatHistory={setChatHistory} />
       <ChatBody
         prompt={prompt}
         chatHistory={chatHistory}

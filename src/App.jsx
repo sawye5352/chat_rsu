@@ -1,43 +1,58 @@
-import React, { useEffect, useState } from "react";
-import { useLocalStorage } from "@uidotdev/usehooks";
-import { useQuery } from "react-query";
-import axios from "axios";
+import React, { useState } from "react";
 import ChatHeader from "./components/ChatHeader";
 import ChatBody from "./components/ChatBody.jsx";
 import ChatInput from "./components/ChatInput";
+import { getChatResponse } from "./services/chat.js";
 
 function App() {
-  const [chatLog, setChatLog] = useLocalStorage("chatLog", []);
+  const [chatHistory, setChatHistory] = useState([]);
   const [prompt, setPrompt] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { isLoading, isError, data } = useQuery(
-    ["chatsLogs", prompt],
-    () =>
-      axios
-        .get(`https://rsu-ai-chat-api.onrender.com/?prompt=${prompt}`)
-        .then((res) => res.data),
-    {
-      enabled: !!prompt,
+  const options = {
+    body: {
+      history: chatHistory,
+      prompt: prompt,
     },
-  );
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
-  useEffect(() => {
-    if (data) {
-      setChatLog((prevChatLog) => [
-        ...prevChatLog,
-        { type: "GPT", message: data },
+  const fetchChatResponse = async () => {
+    setIsLoading(true);
+    try {
+      const response = await getChatResponse(options);
+      setChatHistory([
+        ...chatHistory,
+        {
+          role: "user",
+          parts: [prompt],
+        },
+        {
+          role: "model",
+          parts: [response],
+        },
       ]);
+    } catch (error) {
+      console.error("Error fetching chat response:", error);
     }
-  }, [data]);
+    setIsLoading(false);
+  };
 
   return (
-    <div className="flex h-dvh  flex-col rounded-lg">
+    <div className="flex h-dvh flex-col rounded-lg">
       <ChatHeader />
-      <ChatBody chatLog={chatLog} isError={isError} />
+      <ChatBody
+        prompt={prompt}
+        chatHistory={chatHistory}
+        isLoading={isLoading}
+      />
       <ChatInput
-        setChatLog={setChatLog}
+        prompt={prompt}
         setPrompt={setPrompt}
         isLoading={isLoading}
+        fetchChatResponse={fetchChatResponse}
       />
     </div>
   );

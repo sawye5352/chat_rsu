@@ -9,6 +9,6 @@ export const getChatResponse = async (options) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error.message);
-    return null;
+    return "Something went wrong. Please try again later.";
   }
 };
